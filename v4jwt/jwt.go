@@ -10,7 +10,16 @@ import (
 // This is a private claims structure that includes the
 // necessary JWT standard claims
 type jwtClaims struct {
-	V4Claims
+	UserID           string `json:"userId"`
+	IsUVA            bool   `json:"isUva"`
+	CanPurchase      bool   `json:"canPurchase"`
+	CanLEO           bool   `json:"canLEO"`
+	CanLEOPlus       bool   `json:"canLEOPlus"`
+	CanPlaceReserve  bool   `json:"canPlaceReserve"`
+	CanBrowseReserve bool   `json:"canBrowseReserve"`
+	UseSIS           bool   `json:"useSIS"`
+	Role             string `json:"role"`
+	AuthMethod       string `json:"authMethod"`
 	jwt.StandardClaims
 }
 
@@ -27,7 +36,16 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 
 	expirationTime := time.Now().Add(duration)
 	claims := jwtClaims{
-		V4Claims: v4Claims,
+		UserID:           v4Claims.UserID,
+		IsUVA:            v4Claims.IsUVA,
+		CanPurchase:      v4Claims.CanPurchase,
+		CanLEO:           v4Claims.CanLEO,
+		CanLEOPlus:       v4Claims.CanLEOPlus,
+		CanPlaceReserve:  v4Claims.CanPlaceReserve,
+		CanBrowseReserve: v4Claims.CanBrowseReserve,
+		UseSIS:           v4Claims.UseSIS,
+		Role:             v4Claims.Role.String(),
+		AuthMethod:       v4Claims.AuthMethod.String(),
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 			IssuedAt:  time.Now().Unix(),
@@ -54,6 +72,7 @@ func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 	if jwtErr != nil {
 		return nil, jwtErr
 	}
+
 	out := V4Claims{UserID: jwtClaims.UserID,
 		IsUVA:            jwtClaims.IsUVA,
 		CanPurchase:      jwtClaims.CanPurchase,
@@ -62,7 +81,7 @@ func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 		CanPlaceReserve:  jwtClaims.CanPlaceReserve,
 		CanBrowseReserve: jwtClaims.CanBrowseReserve,
 		UseSIS:           jwtClaims.UseSIS,
-		Role:             jwtClaims.Role,
-		AuthMethod:       jwtClaims.AuthMethod}
+		Role:             RoleFromString(jwtClaims.Role),
+		AuthMethod:       AuthFromString(jwtClaims.AuthMethod)}
 	return &out, nil
 }

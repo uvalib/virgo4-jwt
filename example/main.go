@@ -34,7 +34,7 @@ func main() {
 	}
 
 	log.Printf("Test generation of Admin Purchaser JWT")
-	claims = v4jwt.V4Claims{UserID: "admin1", Role: v4jwt.Admin, CanPurchase: true}
+	claims = v4jwt.V4Claims{UserID: "admin1", Role: v4jwt.Admin, CanPurchase: true, AuthMethod: v4jwt.Netbadge}
 	jwtStr, err = v4jwt.Mint(claims, 5*time.Minute, signingKey)
 	if err != nil {
 		log.Printf("ERROR: Unable to mint admin JWT: %s", err.Error())

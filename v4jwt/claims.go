@@ -1,5 +1,9 @@
 package v4jwt
 
+// Private values for enum types
+var authValues = [...]string{"none", "pin", "netbadge"}
+var roleValues = [...]string{"guest", "user", "admin"}
+
 // RoleEnum is the enumerated type for V4 user role
 type RoleEnum int
 
@@ -12,11 +16,23 @@ const (
 	Admin
 )
 
+// RoleFromString converts string roles to Enum
+func RoleFromString(str string) RoleEnum {
+	out := Guest
+	for idx, val := range roleValues {
+		if val == str {
+			out = RoleEnum(idx)
+			break
+		}
+	}
+	return out
+}
+
 func (r RoleEnum) String() string {
 	if r < 0 || r > 2 {
 		return "guest"
 	}
-	return [...]string{"guest", "user", "admin"}[r]
+	return roleValues[r]
 }
 
 // AuthEnum is the enumerated type for V4 user authentication methods
@@ -31,11 +47,23 @@ const (
 	Netbadge
 )
 
+// AuthFromString converts string auth to AuthEnum
+func AuthFromString(str string) AuthEnum {
+	out := NoAuth
+	for idx, val := range authValues {
+		if val == str {
+			out = AuthEnum(idx)
+			break
+		}
+	}
+	return out
+}
+
 func (r AuthEnum) String() string {
 	if r < 0 || r > 2 {
 		return "none"
 	}
-	return [...]string{"none", "pin", "netbadge"}[r]
+	return authValues[r]
 }
 
 // V4Claims encapsulates all of the information about Virgo4 user
