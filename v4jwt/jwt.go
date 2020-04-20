@@ -10,16 +10,15 @@ import (
 // This is a private claims structure that includes the
 // necessary JWT standard claims
 type jwtClaims struct {
-	UserID           string `json:"userId"`
-	IsUVA            bool   `json:"isUva"`
-	CanPurchase      bool   `json:"canPurchase"`
-	CanLEO           bool   `json:"canLEO"`
-	CanLEOPlus       bool   `json:"canLEOPlus"`
-	CanPlaceReserve  bool   `json:"canPlaceReserve"`
-	CanBrowseReserve bool   `json:"canBrowseReserve"`
-	UseSIS           bool   `json:"useSIS"`
-	Role             string `json:"role"`
-	AuthMethod       string `json:"authMethod"`
+	UserID          string `json:"userId"`
+	IsUVA           bool   `json:"isUva"`
+	CanPurchase     bool   `json:"canPurchase"`
+	CanLEO          bool   `json:"canLEO"`
+	CanLEOPlus      bool   `json:"canLEOPlus"`
+	CanPlaceReserve bool   `json:"canPlaceReserve"`
+	UseSIS          bool   `json:"useSIS"`
+	Role            string `json:"role"`
+	AuthMethod      string `json:"authMethod"`
 	jwt.StandardClaims
 }
 

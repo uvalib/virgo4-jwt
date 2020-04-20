@@ -16,7 +16,6 @@ This library supports a set of claims specific to Virgo4. They are found in v4jw
 * CanLEO
 * CanLEOPlus
 * CanPlaceReserve 
-* CanBrowseReserve 
 * UseSIS 
 * Role (required)
 * AuthMethod
