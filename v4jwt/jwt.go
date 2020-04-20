@@ -36,16 +36,15 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 
 	expirationTime := time.Now().Add(duration)
 	claims := jwtClaims{
-		UserID:           v4Claims.UserID,
-		IsUVA:            v4Claims.IsUVA,
-		CanPurchase:      v4Claims.CanPurchase,
-		CanLEO:           v4Claims.CanLEO,
-		CanLEOPlus:       v4Claims.CanLEOPlus,
-		CanPlaceReserve:  v4Claims.CanPlaceReserve,
-		CanBrowseReserve: v4Claims.CanBrowseReserve,
-		UseSIS:           v4Claims.UseSIS,
-		Role:             v4Claims.Role.String(),
-		AuthMethod:       v4Claims.AuthMethod.String(),
+		UserID:          v4Claims.UserID,
+		IsUVA:           v4Claims.IsUVA,
+		CanPurchase:     v4Claims.CanPurchase,
+		CanLEO:          v4Claims.CanLEO,
+		CanLEOPlus:      v4Claims.CanLEOPlus,
+		CanPlaceReserve: v4Claims.CanPlaceReserve,
+		UseSIS:          v4Claims.UseSIS,
+		Role:            v4Claims.Role.String(),
+		AuthMethod:      v4Claims.AuthMethod.String(),
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 			IssuedAt:  time.Now().Unix(),
@@ -74,14 +73,13 @@ func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 	}
 
 	out := V4Claims{UserID: jwtClaims.UserID,
-		IsUVA:            jwtClaims.IsUVA,
-		CanPurchase:      jwtClaims.CanPurchase,
-		CanLEO:           jwtClaims.CanLEO,
-		CanLEOPlus:       jwtClaims.CanLEOPlus,
-		CanPlaceReserve:  jwtClaims.CanPlaceReserve,
-		CanBrowseReserve: jwtClaims.CanBrowseReserve,
-		UseSIS:           jwtClaims.UseSIS,
-		Role:             RoleFromString(jwtClaims.Role),
-		AuthMethod:       AuthFromString(jwtClaims.AuthMethod)}
+		IsUVA:           jwtClaims.IsUVA,
+		CanPurchase:     jwtClaims.CanPurchase,
+		CanLEO:          jwtClaims.CanLEO,
+		CanLEOPlus:      jwtClaims.CanLEOPlus,
+		CanPlaceReserve: jwtClaims.CanPlaceReserve,
+		UseSIS:          jwtClaims.UseSIS,
+		Role:            RoleFromString(jwtClaims.Role),
+		AuthMethod:      AuthFromString(jwtClaims.AuthMethod)}
 	return &out, nil
 }

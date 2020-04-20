@@ -68,14 +68,13 @@ func (r AuthEnum) String() string {
 
 // V4Claims encapsulates all of the information about Virgo4 user
 type V4Claims struct {
-	UserID           string   `json:"userId"` // v4 userID or anonymous
-	IsUVA            bool     `json:"isUva"`
-	CanPurchase      bool     `json:"canPurchase"`
-	CanLEO           bool     `json:"canLEO"`
-	CanLEOPlus       bool     `json:"canLEOPlus"`
-	CanPlaceReserve  bool     `json:"canPlaceReserve"`
-	CanBrowseReserve bool     `json:"canBrowseReserve"`
-	UseSIS           bool     `json:"useSIS"`
-	Role             RoleEnum `json:"role"`       // guest, user, admin
-	AuthMethod       AuthEnum `json:"authMethod"` // none, pin, netbadge
+	UserID          string   `json:"userId"` // v4 userID or anonymous
+	IsUVA           bool     `json:"isUva"`
+	CanPurchase     bool     `json:"canPurchase"`
+	CanLEO          bool     `json:"canLEO"`
+	CanLEOPlus      bool     `json:"canLEOPlus"`
+	CanPlaceReserve bool     `json:"canPlaceReserve"`
+	UseSIS          bool     `json:"useSIS"`
+	Role            RoleEnum `json:"role"`       // guest, user, admin
+	AuthMethod      AuthEnum `json:"authMethod"` // none, pin, netbadge
 }
