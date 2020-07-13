@@ -46,8 +46,8 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 		AuthMethod:      v4Claims.AuthMethod.String(),
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
-			IssuedAt:  time.Now().Unix(),
-			Issuer:    "v4",
+			// IssuedAt:  time.Now().Unix(),
+			Issuer: "v4",
 		},
 	}
 
