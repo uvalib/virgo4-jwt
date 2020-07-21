@@ -60,6 +60,29 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 	return signedStr, nil
 }
 
+// Refresh will verify the signature of a token, refresh its expiration time and re-sign
+func Refresh(signedStr string, duration time.Duration, jwtKey string) (string, error) {
+	jwtClaims := &jwtClaims{}
+	_, jwtErr := jwt.ParseWithClaims(signedStr, jwtClaims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(jwtKey), nil
+	})
+
+	if jwtErr != nil {
+		return "", jwtErr
+	}
+
+	expirationTime := time.Now().Add(duration)
+	jwtClaims.StandardClaims.ExpiresAt = expirationTime.Unix()
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwtClaims)
+	signedStr, err := token.SignedString([]byte(jwtKey))
+	if err != nil {
+		return "", err
+	}
+
+	return signedStr, nil
+}
+
 // Validate will verify the signature of a token and return the claims it contains
 func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 	jwtClaims := &jwtClaims{}

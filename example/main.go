@@ -51,20 +51,33 @@ func main() {
 		log.Printf("ERROR: Validated WITH BAD KEY")
 	}
 
-	log.Printf("Generate short lived JWT")
+	log.Printf("Generate short lived JWT with renew")
 	claims = v4jwt.V4Claims{Role: v4jwt.Guest}
-	jwtStr, err = v4jwt.Mint(claims, 1*time.Second, signingKey)
+	jwtStr, err = v4jwt.Mint(claims, 3*time.Second, signingKey)
 	if err != nil {
 		log.Printf("ERROR: Unable to mint anonymous JWT: %s", err.Error())
 	} else {
-		log.Printf("SUCCESS, delay for 2 seconds...")
+		log.Printf("SUCCESS, delay for 2 seconds, then renew...")
 		time.Sleep(2 * time.Second)
-		log.Printf("Check for expired JWT...")
-		_, vErr := v4jwt.Validate(jwtStr, signingKey)
-		if vErr != nil {
-			log.Printf("SUCCESS: JWT did not validate: %s", vErr.Error())
+		refreshed, err := v4jwt.Refresh(jwtStr, 3*time.Second, signingKey)
+		if err != nil {
+			log.Printf("ERROR: unable to refresh JWT")
 		} else {
-			log.Printf("ERROR: JWT not expired")
+			log.Printf("SUCCESS, delay for 2 seconds and make sure still valid")
+			time.Sleep(2 * time.Second)
+			_, vErr := v4jwt.Validate(refreshed, signingKey)
+			if vErr != nil {
+				log.Printf("ERROR: unable to validate refreshed JWT")
+			} else {
+				log.Printf("SUCCESS, delay for 2 seconds and make sure it is not valid")
+				time.Sleep(2 * time.Second)
+				_, vErr := v4jwt.Validate(jwtStr, signingKey)
+				if vErr != nil {
+					log.Printf("SUCCESS: JWT did not validate: %s", vErr.Error())
+				} else {
+					log.Printf("ERROR: JWT not expired")
+				}
+			}
 		}
 	}
 }
