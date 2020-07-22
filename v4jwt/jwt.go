@@ -67,8 +67,12 @@ func Refresh(signedStr string, duration time.Duration, jwtKey string) (string, e
 		return []byte(jwtKey), nil
 	})
 
+	// It is OK for a token to be expired when renewing
 	if jwtErr != nil {
-		return "", jwtErr
+		valErr, _ := jwtErr.(*jwt.ValidationError)
+		if valErr.Errors != jwt.ValidationErrorExpired {
+			return "", jwtErr
+		}
 	}
 
 	expirationTime := time.Now().Add(duration)
