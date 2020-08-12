@@ -12,6 +12,7 @@ import (
 type jwtClaims struct {
 	UserID          string `json:"userId"`
 	IsUVA           bool   `json:"isUva"`
+	HomeLibrary     string `json:"homeLibrary"`
 	CanPurchase     bool   `json:"canPurchase"`
 	CanLEO          bool   `json:"canLEO"`
 	CanLEOPlus      bool   `json:"canLEOPlus"`
@@ -37,6 +38,7 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 	claims := jwtClaims{
 		UserID:          v4Claims.UserID,
 		IsUVA:           v4Claims.IsUVA,
+		HomeLibrary:     v4Claims.HomeLibrary,
 		CanPurchase:     v4Claims.CanPurchase,
 		CanLEO:          v4Claims.CanLEO,
 		CanLEOPlus:      v4Claims.CanLEOPlus,
@@ -100,6 +102,7 @@ func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 
 	out := V4Claims{UserID: jwtClaims.UserID,
 		IsUVA:           jwtClaims.IsUVA,
+		HomeLibrary:     jwtClaims.HomeLibrary,
 		CanPurchase:     jwtClaims.CanPurchase,
 		CanLEO:          jwtClaims.CanLEO,
 		CanLEOPlus:      jwtClaims.CanLEOPlus,

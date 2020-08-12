@@ -70,6 +70,7 @@ func (r AuthEnum) String() string {
 type V4Claims struct {
 	UserID          string   `json:"userId"` // v4 userID or anonymous
 	IsUVA           bool     `json:"isUva"`
+	HomeLibrary     string   `json:"homeLibrary"`
 	CanPurchase     bool     `json:"canPurchase"`
 	CanLEO          bool     `json:"canLEO"`
 	CanLEOPlus      bool     `json:"canLEOPlus"`
