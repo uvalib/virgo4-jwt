@@ -26,8 +26,10 @@ type jwtClaims struct {
 // Mint will create a new JWT for Virgo4 using the claims and signing key provided
 func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, error) {
 	if v4Claims.Role == Guest {
-		v4Claims.UserID = "anonymous"
-		v4Claims.AuthMethod = NoAuth
+		if v4Claims.UserID == "" {
+			v4Claims.UserID = "anonymous"
+			v4Claims.AuthMethod = NoAuth
+		}
 	} else {
 		if v4Claims.UserID == "" {
 			return "", errors.New("UserID is required for non-Guest roles")
