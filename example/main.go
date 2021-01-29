@@ -23,6 +23,16 @@ func main() {
 		log.Printf("SUCCESS: New JWT: %s", jwtStr)
 	}
 
+	log.Printf("Test guest mint with UserID...")
+	claims = v4jwt.V4Claims{Role: v4jwt.Guest, IsUVA: true, UserID: "NoSIRSI", AuthMethod: v4jwt.Netbadge}
+	jwtStr, err = v4jwt.Mint(claims, 5*time.Minute, signingKey)
+	if err != nil {
+		log.Printf("ERROR: Unable to generate Guest JWT with UserID: %s", err.Error())
+
+	} else {
+		log.Printf("SUCCESS: Generated Guest JWT with UserID: %s", jwtStr)
+	}
+
 	log.Printf("Test invalid mint (no UserID)...")
 	claims = v4jwt.V4Claims{Role: v4jwt.Admin}
 	jwtStr, err = v4jwt.Mint(claims, 5*time.Minute, signingKey)
