@@ -71,6 +71,7 @@ type V4Claims struct {
 	UserID          string   `json:"userId"` // v4 userID or anonymous
 	IsUVA           bool     `json:"isUva"`
 	HomeLibrary     string   `json:"homeLibrary"`
+	Profile         string   `json:"profile"`
 	CanPurchase     bool     `json:"canPurchase"`
 	CanLEO          bool     `json:"canLEO"`
 	CanLEOPlus      bool     `json:"canLEOPlus"`

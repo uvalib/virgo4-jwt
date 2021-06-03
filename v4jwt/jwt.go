@@ -13,6 +13,7 @@ type jwtClaims struct {
 	UserID          string `json:"userId"`
 	IsUVA           bool   `json:"isUva"`
 	HomeLibrary     string `json:"homeLibrary"`
+	Profile         string `json:"profile"`
 	CanPurchase     bool   `json:"canPurchase"`
 	CanLEO          bool   `json:"canLEO"`
 	CanLEOPlus      bool   `json:"canLEOPlus"`
@@ -41,6 +42,7 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 		UserID:          v4Claims.UserID,
 		IsUVA:           v4Claims.IsUVA,
 		HomeLibrary:     v4Claims.HomeLibrary,
+		Profile:         v4Claims.Profile,
 		CanPurchase:     v4Claims.CanPurchase,
 		CanLEO:          v4Claims.CanLEO,
 		CanLEOPlus:      v4Claims.CanLEOPlus,
@@ -105,6 +107,7 @@ func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 	out := V4Claims{UserID: jwtClaims.UserID,
 		IsUVA:           jwtClaims.IsUVA,
 		HomeLibrary:     jwtClaims.HomeLibrary,
+		Profile:         jwtClaims.Profile,
 		CanPurchase:     jwtClaims.CanPurchase,
 		CanLEO:          jwtClaims.CanLEO,
 		CanLEOPlus:      jwtClaims.CanLEOPlus,
