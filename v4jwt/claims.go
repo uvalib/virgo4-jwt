@@ -2,7 +2,7 @@ package v4jwt
 
 // Private values for enum types
 var authValues = [...]string{"none", "pin", "netbadge"}
-var roleValues = [...]string{"guest", "user", "admin"}
+var roleValues = [...]string{"guest", "user", "admin", "pdaadmin"}
 
 // RoleEnum is the enumerated type for V4 user role
 type RoleEnum int
@@ -14,6 +14,8 @@ const (
 	User
 	// Admin is a signed in user with admin privileges
 	Admin
+	// PDAAdmin is a signed in user with PDA admin privileges
+	PDAAdmin
 )
 
 // RoleFromString converts string roles to Enum
