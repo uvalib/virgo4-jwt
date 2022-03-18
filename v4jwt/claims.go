@@ -31,7 +31,7 @@ func RoleFromString(str string) RoleEnum {
 }
 
 func (r RoleEnum) String() string {
-	if r < 0 || r > 2 {
+	if r < 0 || r > 3 {
 		return "guest"
 	}
 	return roleValues[r]
