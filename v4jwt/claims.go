@@ -2,7 +2,7 @@ package v4jwt
 
 // Private values for enum types
 var authValues = [...]string{"none", "pin", "netbadge"}
-var roleValues = [...]string{"guest", "user", "admin", "pdaadmin"}
+var roleValues = [...]string{"guest", "user", "staff", "admin", "pdaadmin"}
 
 // RoleEnum is the enumerated type for V4 user role
 type RoleEnum int
@@ -12,6 +12,8 @@ const (
 	Guest RoleEnum = iota
 	// User is a standard signed in user
 	User
+	// Staff is a user that is also a virgo staff member with less access than an admin
+	Staff
 	// Admin is a signed in user with admin privileges
 	Admin
 	// PDAAdmin is a signed in user with PDA admin privileges
@@ -79,6 +81,6 @@ type V4Claims struct {
 	CanLEOPlus      bool     `json:"canLEOPlus"`
 	CanPlaceReserve bool     `json:"canPlaceReserve"`
 	UseSIS          bool     `json:"useSIS"`
-	Role            RoleEnum `json:"role"`       // guest, user, admin
+	Role            RoleEnum `json:"role"`       // guest, user, staff, admin, pdaadmin
 	AuthMethod      AuthEnum `json:"authMethod"` // none, pin, netbadge
 }
