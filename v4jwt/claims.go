@@ -33,8 +33,8 @@ func RoleFromString(str string) RoleEnum {
 }
 
 func (r RoleEnum) String() string {
-	if r < 0 || r > 3 {
-		return "guest"
+	if r < 0 || int(r) > len(roleValues) - 1 {
+		r = 0
 	}
 	return roleValues[r]
 }
@@ -64,7 +64,7 @@ func AuthFromString(str string) AuthEnum {
 }
 
 func (r AuthEnum) String() string {
-	if r < 0 || r > 2 {
+	if r < 0 || int(r) > len(authValues) - 1 {
 		return "none"
 	}
 	return authValues[r]
