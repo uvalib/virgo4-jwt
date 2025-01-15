@@ -33,7 +33,7 @@ func RoleFromString(str string) RoleEnum {
 }
 
 func (r RoleEnum) String() string {
-	if r < 0 || int(r) > len(roleValues) - 1 {
+	if r < 0 || int(r) > len(roleValues)-1 {
 		r = 0
 	}
 	return roleValues[r]
@@ -64,7 +64,7 @@ func AuthFromString(str string) AuthEnum {
 }
 
 func (r AuthEnum) String() string {
-	if r < 0 || int(r) > len(authValues) - 1 {
+	if r < 0 || int(r) > len(authValues)-1 {
 		return "none"
 	}
 	return authValues[r]
@@ -72,7 +72,8 @@ func (r AuthEnum) String() string {
 
 // V4Claims encapsulates all of the information about Virgo4 user
 type V4Claims struct {
-	UserID          string   `json:"userId"` // v4 userID or anonymous
+	UserID          string   `json:"userId"`  // v4 userID or anonymous
+	Barcode         string   `json:"barcode"` // sirsi user barcode or blank
 	IsUVA           bool     `json:"isUva"`
 	HomeLibrary     string   `json:"homeLibrary"`
 	Profile         string   `json:"profile"`

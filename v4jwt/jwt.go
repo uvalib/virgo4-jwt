@@ -11,6 +11,7 @@ import (
 // necessary JWT standard claims
 type jwtClaims struct {
 	UserID          string `json:"userId"`
+	Barcode         string `json:"barcode"`
 	IsUVA           bool   `json:"isUva"`
 	HomeLibrary     string `json:"homeLibrary"`
 	Profile         string `json:"profile"`
@@ -40,6 +41,7 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 	expirationTime := time.Now().Add(duration)
 	claims := jwtClaims{
 		UserID:          v4Claims.UserID,
+		Barcode:         v4Claims.Barcode,
 		IsUVA:           v4Claims.IsUVA,
 		HomeLibrary:     v4Claims.HomeLibrary,
 		Profile:         v4Claims.Profile,
@@ -104,7 +106,9 @@ func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 		return nil, jwtErr
 	}
 
-	out := V4Claims{UserID: jwtClaims.UserID,
+	out := V4Claims{
+		UserID:          jwtClaims.UserID,
+		Barcode:         jwtClaims.Barcode,
 		IsUVA:           jwtClaims.IsUVA,
 		HomeLibrary:     jwtClaims.HomeLibrary,
 		Profile:         jwtClaims.Profile,
