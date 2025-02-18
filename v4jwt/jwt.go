@@ -8,7 +8,7 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-const jwtVersion = "1.2.0"
+const jwtVersion = "1.2.1"
 
 // VersionError is triggered in the validation method when the passed JWT string
 // contains a version that doent match the version exposed above
@@ -122,7 +122,7 @@ func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 	}
 
 	if jwtClaims.Version != jwtVersion {
-		ve := VersionError{Message: fmt.Sprintf("bad jwt version %s", jwtClaims.Version)}
+		ve := VersionError{Message: fmt.Sprintf("bad jwt version %s for %s", jwtClaims.Version, jwtClaims.UserID)}
 		return nil, &ve
 	}
 
