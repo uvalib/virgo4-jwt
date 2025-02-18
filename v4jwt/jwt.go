@@ -2,10 +2,23 @@ package v4jwt
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
 	"github.com/golang-jwt/jwt"
 )
+
+const jwtVersion = "1.2.0"
+
+// VersionError is triggered in the validation method when the passed JWT string
+// contains a version that doent match the version exposed above
+type VersionError struct {
+	Message string
+}
+
+func (e *VersionError) Error() string {
+	return e.Message
+}
 
 // This is a private claims structure that includes the
 // necessary JWT standard claims
@@ -22,6 +35,7 @@ type jwtClaims struct {
 	UseSIS          bool   `json:"useSIS"`
 	Role            string `json:"role"`
 	AuthMethod      string `json:"authMethod"`
+	Version         string `json:"version"`
 	jwt.StandardClaims
 }
 
@@ -52,6 +66,7 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 		UseSIS:          v4Claims.UseSIS,
 		Role:            v4Claims.Role.String(),
 		AuthMethod:      v4Claims.AuthMethod.String(),
+		Version:         jwtVersion,
 		StandardClaims: jwt.StandardClaims{
 			ExpiresAt: expirationTime.Unix(),
 			// IssuedAt:  time.Now().Unix(),
@@ -104,6 +119,11 @@ func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 
 	if jwtErr != nil {
 		return nil, jwtErr
+	}
+
+	if jwtClaims.Version != jwtVersion {
+		ve := VersionError{Message: fmt.Sprintf("bad jwt version %s", jwtClaims.Version)}
+		return nil, &ve
 	}
 
 	out := V4Claims{
