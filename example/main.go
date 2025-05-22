@@ -91,7 +91,8 @@ func main() {
 		} else {
 			log.Printf("SUCCESS, delay for 2 seconds and make sure still valid")
 			time.Sleep(2 * time.Second)
-			_, vErr := v4jwt.Validate(refreshed, signingKey)
+			claims, vErr := v4jwt.Validate(refreshed, signingKey)
+			log.Printf("Claims: %+v", claims)
 			if vErr != nil {
 				log.Printf("ERROR: unable to validate refreshed JWT")
 			} else {
