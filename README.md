@@ -18,6 +18,7 @@ This library supports a set of claims specific to Virgo4. They are found in v4jw
 * CanPlaceReserve
 * LEOLocation
 * IlliadCleared
+* HasIlliad
 * UseSIS
 * Role (required)
 * AuthMethod

@@ -83,6 +83,7 @@ type V4Claims struct {
 	CanPlaceReserve bool     `json:"canPlaceReserve"`
 	LEOLocation     string   `json:"leoLocation"`
 	IlliadCleared   string   `json:"illiadCleared"`
+	HasIlliad       bool     `json:"hasIlliad"`
 	UseSIS          bool     `json:"useSIS"`
 	Role            RoleEnum `json:"role"`       // guest, user, staff, admin, pdaadmin
 	AuthMethod      AuthEnum `json:"authMethod"` // none, pin, netbadge
