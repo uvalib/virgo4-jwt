@@ -16,7 +16,6 @@ func main() {
 	log.Printf("[role] User     : %v", v4jwt.User)
 	log.Printf("[role] Staff    : %v", v4jwt.Staff)
 	log.Printf("[role] Admin    : %v", v4jwt.Admin)
-	log.Printf("[role] PDAAdmin : %v", v4jwt.PDAAdmin)
 	log.Printf("[auth] NoAuth   : %v", v4jwt.NoAuth)
 	log.Printf("[auth] PIN      : %v", v4jwt.PIN)
 	log.Printf("[auth] Netbadge : %v", v4jwt.Netbadge)

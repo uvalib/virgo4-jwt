@@ -8,7 +8,7 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-const jwtVersion = "1.2.3"
+const jwtVersion = "1.3.0"
 
 // VersionError is triggered in the validation method when the passed JWT string
 // contains a version that doent match the version exposed above
@@ -32,9 +32,7 @@ type jwtClaims struct {
 	CanLEO          bool   `json:"canLEO"`
 	CanLEOPlus      bool   `json:"canLEOPlus"`
 	CanPlaceReserve bool   `json:"canPlaceReserve"`
-	LEOLocation     string `json:"leoLocation"`
-	IlliadCleared   string `json:"illiadCleared"`
-	HasIlliad       bool   `json:"hasIlliad"`
+	CanUseILLiad    bool   `json:"canUseILLiad"`
 	UseSIS          bool   `json:"useSIS"`
 	Role            string `json:"role"`
 	AuthMethod      string `json:"authMethod"`
@@ -66,9 +64,7 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 		CanLEO:          v4Claims.CanLEO,
 		CanLEOPlus:      v4Claims.CanLEOPlus,
 		CanPlaceReserve: v4Claims.CanPlaceReserve,
-		LEOLocation:     v4Claims.LEOLocation,
-		IlliadCleared:   v4Claims.IlliadCleared,
-		HasIlliad:       v4Claims.HasIlliad,
+		CanUseILLiad:    v4Claims.CanUseILLiad,
 		UseSIS:          v4Claims.UseSIS,
 		Role:            v4Claims.Role.String(),
 		AuthMethod:      v4Claims.AuthMethod.String(),
@@ -142,9 +138,7 @@ func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 		CanLEO:          jwtClaims.CanLEO,
 		CanLEOPlus:      jwtClaims.CanLEOPlus,
 		CanPlaceReserve: jwtClaims.CanPlaceReserve,
-		LEOLocation:     jwtClaims.LEOLocation,
-		IlliadCleared:   jwtClaims.IlliadCleared,
-		HasIlliad:       jwtClaims.HasIlliad,
+		CanUseILLiad:    jwtClaims.CanUseILLiad,
 		UseSIS:          jwtClaims.UseSIS,
 		Role:            RoleFromString(jwtClaims.Role),
 		AuthMethod:      AuthFromString(jwtClaims.AuthMethod)}
