@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
-const jwtVersion = "1.3.0"
+const jwtVersion = "1.3.1"
 
 // VersionError is triggered in the validation method when the passed JWT string
 // contains a version that doent match the version exposed above
@@ -21,7 +21,7 @@ func (e *VersionError) Error() string {
 }
 
 // This is a private claims structure that includes the
-// necessary JWT standard claims
+// necessary JWT registered claims for token expiration
 type jwtClaims struct {
 	UserID          string `json:"userId"`
 	Barcode         string `json:"barcode"`
@@ -37,7 +37,7 @@ type jwtClaims struct {
 	Role            string `json:"role"`
 	AuthMethod      string `json:"authMethod"`
 	Version         string `json:"version"`
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 
 // Mint will create a new JWT for Virgo4 using the claims and signing key provided
@@ -69,10 +69,9 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 		Role:            v4Claims.Role.String(),
 		AuthMethod:      v4Claims.AuthMethod.String(),
 		Version:         jwtVersion,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
-			// IssuedAt:  time.Now().Unix(),
-			Issuer: "v4",
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(expirationTime),
+			Issuer:    "v4",
 		},
 	}
 
@@ -87,21 +86,18 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 
 // Refresh will verify the signature of a token, refresh its expiration time and re-sign
 func Refresh(signedStr string, duration time.Duration, jwtKey string) (string, error) {
-	jwtClaims := &jwtClaims{}
-	_, jwtErr := jwt.ParseWithClaims(signedStr, jwtClaims, func(token *jwt.Token) (interface{}, error) {
+	jwtClaims := jwtClaims{}
+	_, jwtErr := jwt.ParseWithClaims(signedStr, &jwtClaims, func(token *jwt.Token) (any, error) {
 		return []byte(jwtKey), nil
 	})
 
 	// It is OK for a token to be expired when renewing
-	if jwtErr != nil {
-		valErr, _ := jwtErr.(*jwt.ValidationError)
-		if valErr.Errors != jwt.ValidationErrorExpired {
-			return "", jwtErr
-		}
+	if errors.Is(jwtErr, jwt.ErrTokenExpired) == false {
+		return "", jwtErr
 	}
 
 	expirationTime := time.Now().Add(duration)
-	jwtClaims.StandardClaims.ExpiresAt = expirationTime.Unix()
+	jwtClaims.RegisteredClaims.ExpiresAt = jwt.NewNumericDate(expirationTime)
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwtClaims)
 	signedStr, err := token.SignedString([]byte(jwtKey))
@@ -114,8 +110,8 @@ func Refresh(signedStr string, duration time.Duration, jwtKey string) (string, e
 
 // Validate will verify the signature of a token and return the claims it contains
 func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
-	jwtClaims := &jwtClaims{}
-	_, jwtErr := jwt.ParseWithClaims(signedStr, jwtClaims, func(token *jwt.Token) (interface{}, error) {
+	jwtClaims := jwtClaims{}
+	_, jwtErr := jwt.ParseWithClaims(signedStr, &jwtClaims, func(token *jwt.Token) (any, error) {
 		return []byte(jwtKey), nil
 	})
 

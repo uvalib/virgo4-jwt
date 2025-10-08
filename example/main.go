@@ -78,7 +78,7 @@ func main() {
 
 	log.Printf("Generate short lived JWT with renew")
 	claims = v4jwt.V4Claims{Role: v4jwt.Guest}
-	jwtStr, err = v4jwt.Mint(claims, 3*time.Second, signingKey)
+	jwtStr, err = v4jwt.Mint(claims, 1*time.Second, signingKey)
 	if err != nil {
 		log.Printf("ERROR: Unable to mint anonymous JWT: %s", err.Error())
 	} else {

@@ -11,16 +11,17 @@ To run the examples, execute ```go run example/main.go```
 This library supports a set of claims specific to Virgo4. They are found in v4jwt.V4Claims:
 
 * UserID
+* Barcode
 * IsUVA
+* HomeLibrary
+* Profile
 * CanPurchase
 * CanLEO
 * CanLEOPlus
 * CanPlaceReserve
-* LEOLocation
-* IlliadCleared
-* HasIlliad
+* CanUseILLiad
 * UseSIS
-* Role (required)
+* Role
 * AuthMethod
 
 Role is an enumerated type with values: Guest, User and Admin. All but Guest require a UserID.
@@ -33,4 +34,4 @@ There are two API calls
 *
 ### System Requirements
 
-* GO version 1.14 or greater (mod required)
+* GO version 1.21 or greater
