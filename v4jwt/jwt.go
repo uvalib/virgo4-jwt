@@ -8,7 +8,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-const jwtVersion = "1.3.1"
+const jwtVersion = "1.3.2"
 
 // VersionError is triggered in the validation method when the passed JWT string
 // contains a version that doent match the version exposed above
@@ -88,7 +88,7 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 // Refresh will verify the signature of a token, refresh its expiration time and re-sign
 func Refresh(signedStr string, duration time.Duration, jwtKey string) (string, error) {
 	jwtClaims := &jwtClaims{}
-	_, jwtErr := jwt.ParseWithClaims(signedStr, jwtClaims, func(token *jwt.Token) (interface{}, error) {
+	_, jwtErr := jwt.ParseWithClaims(signedStr, jwtClaims, func(token *jwt.Token) (any, error) {
 		return []byte(jwtKey), nil
 	})
 
@@ -115,7 +115,7 @@ func Refresh(signedStr string, duration time.Duration, jwtKey string) (string, e
 // Validate will verify the signature of a token and return the claims it contains
 func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 	jwtClaims := &jwtClaims{}
-	_, jwtErr := jwt.ParseWithClaims(signedStr, jwtClaims, func(token *jwt.Token) (interface{}, error) {
+	_, jwtErr := jwt.ParseWithClaims(signedStr, jwtClaims, func(token *jwt.Token) (any, error) {
 		return []byte(jwtKey), nil
 	})
 
