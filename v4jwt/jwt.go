@@ -128,7 +128,6 @@ func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 	}
 
 	out := V4Claims{
-		Version:         jwtClaims.Version,
 		UserID:          jwtClaims.UserID,
 		Barcode:         jwtClaims.Barcode,
 		IsUVA:           jwtClaims.IsUVA,

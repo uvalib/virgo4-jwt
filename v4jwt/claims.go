@@ -83,5 +83,4 @@ type V4Claims struct {
 	UseSIS          bool     `json:"useSIS"`
 	Role            RoleEnum `json:"role"`       // guest, user, staff, admin
 	AuthMethod      AuthEnum `json:"authMethod"` // none, pin, netbadge
-	Version         string   `json:"version"`
 }
