@@ -3,6 +3,7 @@ package v4jwt
 import (
 	"errors"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -99,12 +100,15 @@ func Refresh(signedStr string, duration time.Duration, jwtKey string) (string, e
 	expirationTime := time.Now().Add(duration)
 	jwtClaims.RegisteredClaims.ExpiresAt = jwt.NewNumericDate(expirationTime)
 
+	log.Printf("INFO: update expiration of %s", signedStr)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwtClaims)
+	log.Printf("INFO: token %+v", *token)
 	signedStr, err := token.SignedString([]byte(jwtKey))
 	if err != nil {
 		return "", err
 	}
 
+	log.Printf("INFO: return new jwt [%s]", signedStr)
 	return signedStr, nil
 }
 
