@@ -8,7 +8,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-const jwtVersion = "1.3.2"
+const jwtVersion = "1.3.3"
 
 // VersionError is triggered in the validation method when the passed JWT string
 // contains a version that doent match the version exposed above
@@ -37,7 +37,7 @@ type jwtClaims struct {
 	Role            string `json:"role"`
 	AuthMethod      string `json:"authMethod"`
 	Version         string `json:"version"`
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 
 // Mint will create a new JWT for Virgo4 using the claims and signing key provided
@@ -69,10 +69,9 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 		Role:            v4Claims.Role.String(),
 		AuthMethod:      v4Claims.AuthMethod.String(),
 		Version:         jwtVersion,
-		StandardClaims: jwt.StandardClaims{
-			ExpiresAt: expirationTime.Unix(),
-			// IssuedAt:  time.Now().Unix(),
-			Issuer: "v4",
+		RegisteredClaims: jwt.RegisteredClaims{
+			ExpiresAt: jwt.NewNumericDate(expirationTime),
+			Issuer:    "v4",
 		},
 	}
 
@@ -101,7 +100,7 @@ func Refresh(signedStr string, duration time.Duration, jwtKey string) (string, e
 	}
 
 	expirationTime := time.Now().Add(duration)
-	jwtClaims.StandardClaims.ExpiresAt = expirationTime.Unix()
+	jwtClaims.RegisteredClaims.ExpiresAt = jwt.NewNumericDate(expirationTime)
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwtClaims)
 	signedStr, err := token.SignedString([]byte(jwtKey))
@@ -129,6 +128,7 @@ func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 	}
 
 	out := V4Claims{
+		Version:         jwtClaims.Version,
 		UserID:          jwtClaims.UserID,
 		Barcode:         jwtClaims.Barcode,
 		IsUVA:           jwtClaims.IsUVA,
