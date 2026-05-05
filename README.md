@@ -22,6 +22,7 @@ This library supports a set of claims specific to Virgo4. They are found in v4jw
 * CanUseILLiad
 * UseSIS
 * Role
+* Experimental
 * AuthMethod
 
 Role is an enumerated type with values: Guest, User and Admin. All but Guest require a UserID.

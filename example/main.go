@@ -106,4 +106,27 @@ func main() {
 			}
 		}
 	}
+
+	log.Printf("Test generation of Experimental User JWT")
+	claims = v4jwt.V4Claims{
+		UserID:      "admin1",
+		Barcode:     "000111000",
+		Role:        v4jwt.User,
+		AuthMethod:  v4jwt.Netbadge,
+		Experimental: true,
+	}
+	jwtStr, err = v4jwt.Mint(claims, 5*time.Minute, signingKey)
+	if err != nil {
+		log.Printf("ERROR: Unable to mint expierimental JWT: %s", err.Error())
+
+	} else {
+		log.Printf("SUCCESS: New experimental JWT: %s", jwtStr)
+	}
+	validated, vErr := v4jwt.Validate(jwtStr, signingKey)
+	log.Printf("Experimental Claims: %+v", claims)
+	if vErr != nil {
+		log.Printf("ERROR: unable to validate experimental JWT: %s", vErr.Error())
+	} else {
+		log.Printf("SUCCESS: experimental JWT validated: %+v", validated)
+	}
 }

@@ -8,7 +8,7 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 )
 
-const jwtVersion = "1.3.3"
+const jwtVersion = "1.3.4"
 
 // VersionError is triggered in the validation method when the passed JWT string
 // contains a version that doent match the version exposed above
@@ -34,6 +34,7 @@ type jwtClaims struct {
 	CanPlaceReserve bool   `json:"canPlaceReserve"`
 	CanUseILLiad    bool   `json:"canUseILLiad"`
 	UseSIS          bool   `json:"useSIS"`
+	Experimental    bool   `json:"experimental"`
 	Role            string `json:"role"`
 	AuthMethod      string `json:"authMethod"`
 	Version         string `json:"version"`
@@ -66,6 +67,7 @@ func Mint(v4Claims V4Claims, duration time.Duration, jwtKey string) (string, err
 		CanPlaceReserve: v4Claims.CanPlaceReserve,
 		CanUseILLiad:    v4Claims.CanUseILLiad,
 		UseSIS:          v4Claims.UseSIS,
+		Experimental:    v4Claims.Experimental,
 		Role:            v4Claims.Role.String(),
 		AuthMethod:      v4Claims.AuthMethod.String(),
 		Version:         jwtVersion,
@@ -139,6 +141,7 @@ func Validate(signedStr string, jwtKey string) (*V4Claims, error) {
 		CanPlaceReserve: jwtClaims.CanPlaceReserve,
 		CanUseILLiad:    jwtClaims.CanUseILLiad,
 		UseSIS:          jwtClaims.UseSIS,
+		Experimental:    jwtClaims.Experimental,
 		Role:            RoleFromString(jwtClaims.Role),
 		AuthMethod:      AuthFromString(jwtClaims.AuthMethod)}
 	return &out, nil
